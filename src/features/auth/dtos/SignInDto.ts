@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
-import { Role } from './role';
+import { Role } from '../enums';
 
 export class SignInDto {
   @IsNotEmpty()
