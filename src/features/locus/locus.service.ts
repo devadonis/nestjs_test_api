@@ -37,10 +37,10 @@ export class LocusService {
     }
 
     const orderAndPagenation: any = {
-       order: {
+      order: {
         id: sorting.orderId,
         assemblyId: sorting.orderAId
-       },
+      },
       skip: skipCount,
       take: displayCount,
     }
@@ -58,7 +58,7 @@ export class LocusService {
       }
     }
 
-    const whereForLimited = {     
+    const whereForLimited = {
       id: filterOptions.id,
       assemblyId: filterOptions.assemblyId,
       LocusMembers: [
@@ -80,6 +80,7 @@ export class LocusService {
     if (filterOptions.sideLoading == SideLoading.TRUE && role == Role.ADMIN) {
       return this.locusRepository.find({ ...select, ...sideload, ...where, ...orderAndPagenation });
     }
+
     // Limited
     if (role == Role.LIMITED) {
       if (filterOptions.sideLoading == SideLoading.TRUE)
@@ -87,6 +88,7 @@ export class LocusService {
       else
         return this.locusRepository.find({ ...select, ...whereForLimited, ...orderAndPagenation });
     }
+
     // Admin without sideloading and Noraml case
     return this.locusRepository.find({ ...select, ...where, ...orderAndPagenation });
   }

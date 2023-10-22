@@ -1,3 +1,3 @@
-export enum Id  {
+export enum Id {
   FIRST = 0,
 }
