@@ -9,7 +9,7 @@ import { FilterOptionsDto, PaginationDto, SortingDto } from './dtos';
 @ApiTags('Locus')
 export class LocusController {
   constructor(private locusService: LocusService) { }
-  
+
   @Get()
   @Roles(Role.ADMIN, Role.NORMAL, Role.LIMITED)
   @HttpCode(HttpStatus.OK)

@@ -1,4 +1,4 @@
-export enum SideLoading  {
+export enum SideLoading {
   TRUE = 'true',
   FALSE = 'false'
 };
