@@ -1,41 +1,43 @@
-import { IsString, IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
-import { Id, RegoinId, SideLoading, Sort } from '../enums';
+import { IsString, IsNotEmpty, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { SideLoading } from '../enums';
 import { Transform } from 'class-transformer';
 
 export class FilterOptionsDto {
-  @IsEnum(Id)
-  @Transform (({ value }) => parseInt(value))
-  readonly id?: Id;
+  @ApiProperty({
+    required: false
+  })
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  readonly id?: number;
 
+  @ApiProperty({
+    required: false
+  })
+  @IsOptional()
   @IsString()
   readonly assemblyId?: string;
 
-  @IsEnum(RegoinId)
-  @Transform (({ value }) => parseInt(value))
-  readonly regionId?: RegoinId;
+  @ApiProperty({
+    required: false
+  })
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  readonly regionId?: number;
 
+  @ApiProperty({
+    required: false
+  })
+  @IsOptional()
   @IsString()
   readonly membershipStatus?: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Transform (({ value }) => parseInt(value))
-  readonly skip: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Transform (({ value }) => parseInt(value))
-  readonly take: number;
-
-  @IsEnum(Sort)
-  @Transform (({ value }) => parseInt(value))
-  readonly idOrder?: Sort;
-  
-  @IsEnum(Sort)
-  @Transform (({ value }) => parseInt(value))
-  readonly aIdOrder?: Sort;
-
+  @ApiProperty({
+    default: 'true'
+  })
+  @IsOptional()
   @IsEnum(SideLoading)
-  @Transform (({ value }) => parseInt(value))
-  readonly sideLoading: SideLoading;
+  readonly sideLoading?: SideLoading;
 }

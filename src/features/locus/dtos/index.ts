@@ -1,1 +1,3 @@
-export * from './filter-options.Dto';
+export * from './filter-options.dto';
+export * from './sorting.dto';
+export * from './pagination.dto';

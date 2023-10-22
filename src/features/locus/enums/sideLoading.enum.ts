@@ -1,3 +1,4 @@
 export enum SideLoading  {
-  OFF, ON
+  TRUE = 'true',
+  FALSE = 'false'
 };

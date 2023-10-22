@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Locus } from './entities';
 import { Role } from '../auth/enums/role.enum';
-import { FilterOptionsDto } from './dtos';
+import { FilterOptionsDto, SortingDto, PaginationDto } from './dtos';
+import { IUser } from '../auth/interfaces';
 
-import { Id, RegoinId, SideLoading, Sort } from './enums';
+import { SideLoading } from './enums';
 
 @Injectable()
 export class LocusService {
@@ -14,28 +15,35 @@ export class LocusService {
     private readonly locusRepository: Repository<Locus>,
   ) { }
 
-  async getByRole(req: any, filterOptions: FilterOptionsDto ): Promise<Locus[]> {
-    console.log(filterOptions);
+  async getByRole(
+    user: IUser,
+    filterOptions: FilterOptionsDto,
+    sorting: SortingDto,
+    pagination: PaginationDto
+  ): Promise<Locus[]> {
+    const { role } = user;
+    const { pageNum, displayCount } = pagination;
+    const skipCount = (pageNum - 1) * displayCount;
+    console.log(skipCount)
 
-
-    const { role } = req.user;
     const select: any = {
-      select: { 
+      select: {
         locusMembers: {
-          locusMemberId: true ,
+          locusMemberId: true,
           regionId: true,
           locusId: true,
           membershipStatus: true,
         }
       }
     }
+
     const orderAndPagenation: any = {
-      order: {
-        id: Sort[filterOptions.idOrder],
-        assemblyId: Sort[filterOptions.aIdOrder],
-      },
-      skip: filterOptions.skip,
-      take: filterOptions.take,
+       order: {
+        id: sorting.orderId,
+        assemblyId: sorting.orderAId
+       },
+      skip: skipCount,
+      take: displayCount,
     }
 
     const sideload: any = {
@@ -43,40 +51,44 @@ export class LocusService {
     }
 
     const where: any = {
+      id: filterOptions.id,
       assemblyId: filterOptions.assemblyId,
       LocusMembers: {
+        regionId: filterOptions.regionId,
         membershipStatus: filterOptions.membershipStatus,
       }
     }
 
-    const whereForLimited = {
+    const whereForLimited = {     
+      id: filterOptions.id,
       assemblyId: filterOptions.assemblyId,
       LocusMembers: [
         {
           membershipStatus: filterOptions.membershipStatus,
-          regionId:  86118093,
+          regionId: 86118093,
         },
         {
           membershipStatus: filterOptions.membershipStatus,
-          regionId:  86696489,
+          regionId: 86696489,
         },
         {
           membershipStatus: filterOptions.membershipStatus,
-          regionId:  88186467,
+          regionId: 88186467,
         },
       ]
     }
     // Admin with sideloading
-    if ( filterOptions.sideLoading == SideLoading.ON && role == Role.ADMIN ) {
+    if (filterOptions.sideLoading == SideLoading.TRUE && role == Role.ADMIN) {
       return this.locusRepository.find({ ...select, ...sideload, ...where, ...orderAndPagenation });
     }
-    if ( role == Role.LIMITED ) {
-      if ( filterOptions.sideLoading == SideLoading.ON)
-        return this.locusRepository.find({ ...select, ...whereForLimited, ...orderAndPagenation });
+    // Limited
+    if (role == Role.LIMITED) {
+      if (filterOptions.sideLoading == SideLoading.TRUE)
+        return this.locusRepository.find({ ...select, ...sideload, ...whereForLimited, ...orderAndPagenation });
       else
-        return this.locusRepository.find({ ...select, ...sideload, ...whereForLimited, ...orderAndPagenation });        
-      }
-    // Admin without sideloading, Noraml case
-    return this.locusRepository.find({ ...select, ...where, ...orderAndPagenation });        
+        return this.locusRepository.find({ ...select, ...whereForLimited, ...orderAndPagenation });
+    }
+    // Admin without sideloading and Noraml case
+    return this.locusRepository.find({ ...select, ...where, ...orderAndPagenation });
   }
 }
