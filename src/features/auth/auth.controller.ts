@@ -1,7 +1,6 @@
 import { Controller, UseGuards,  Request, Post, HttpCode, HttpStatus } from '@nestjs/common';
-import { Transform } from 'class-transformer';
 import { AuthService } from './auth.service';
-import { ApiTags, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiQuery } from '@nestjs/swagger';
 import { LocalAuthGuard } from './guards';
 import { Public } from './decorators';
 import { LoginDto } from './dtos';

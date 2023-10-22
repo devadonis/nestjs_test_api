@@ -24,7 +24,6 @@ export class LocusService {
     const { role } = user;
     const { pageNum, displayCount } = pagination;
     const skipCount = (pageNum - 1) * displayCount;
-    console.log(skipCount)
 
     const select: any = {
       select: {
