@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { Locus, LocusMembers } from '../features/locus/entities';
 
 export const databaseConfig = registerAs('database', () => ({
   type: 'postgres',
@@ -7,6 +8,6 @@ export const databaseConfig = registerAs('database', () => ({
   database: process.env.DB_NAME,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+  entities: [Locus, LocusMembers],
   synchronize: true // Shouldn't be used in production otherwise you can lose production data
 }));

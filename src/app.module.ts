@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
 import { databaseConfig, jwtConfig, ttlConfig } from './config';
 import { AuthModule } from './features/auth/auth.module';
 import { UsersModule } from './features/users/users.module';
+import { LocusModule } from './features/locus/locus.module';
 
 @Module({
   imports: [
@@ -18,16 +19,17 @@ import { UsersModule } from './features/users/users.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => config.get('database')
+      useFactory: async (config: ConfigService) => config.get('database'),
+      inject: [ConfigService]
     }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => config.get('ttl')
+      useFactory: (config: ConfigService) => config.get('ttl'),
+      inject: [ConfigService]
     }),
     AuthModule,
     UsersModule,
+    LocusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -41,6 +43,6 @@ export class AppModule {
     @Inject(ttlConfig.KEY)
     private ttlConf: ConfigType<typeof ttlConfig>
   ) {
-    console.log(dbConf, jwtConf, ttlConf);
+    // console.log(dbConf.entities);
   }
 }
