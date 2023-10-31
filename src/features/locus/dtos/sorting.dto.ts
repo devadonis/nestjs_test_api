@@ -8,7 +8,7 @@ export class SortingDto {
   })
   @IsOptional()
   @IsString()
-  orderId: 'ASC' | 'DESC';
+  readonly orderId: 'ASC' | 'DESC';
 
   @ApiProperty({
     required: false,
@@ -16,5 +16,5 @@ export class SortingDto {
   })
   @IsOptional()
   @IsString()
-  orderAId: 'ASC' | 'DESC';
+  readonly orderAId: 'ASC' | 'DESC';
 }

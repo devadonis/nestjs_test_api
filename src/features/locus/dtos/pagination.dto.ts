@@ -10,7 +10,7 @@ export class PaginationDto {
   @IsOptional()
   @IsInt()
   @Transform(({ value }) => parseInt(value))
-  pageNum: number = 1;
+  readonly pageNum: number = 1;
 
   @ApiProperty({
     required: false,
@@ -19,5 +19,5 @@ export class PaginationDto {
   @IsOptional()
   @IsInt()
   @Transform(({ value }) => parseInt(value))
-  displayCount: number = 1000;
+  readonly displayCount: number = 1000;
 }

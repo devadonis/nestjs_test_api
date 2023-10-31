@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Locus } from './entities';
 import { Role } from '../auth/enums/role.enum';
-import { FilterOptionsDto, SortingDto, PaginationDto } from './dtos';
+import { IFilterOptions, ISorting, IPagination } from './interfaces';
 import { IUser } from '../auth/interfaces';
 
 import { SideLoading } from './enums';
@@ -17,9 +17,9 @@ export class LocusService {
 
   async getByRole(
     user: IUser,
-    filterOptions: FilterOptionsDto,
-    sorting: SortingDto,
-    pagination: PaginationDto
+    filterOptions: IFilterOptions,
+    sorting: ISorting,
+    pagination: IPagination
   ): Promise<Locus[]> {
     const { role } = user;
     const { pageNum, displayCount } = pagination;
